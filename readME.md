@@ -80,33 +80,30 @@ Git and GitHub --> Version control
 
 HireHub/
 ├── admin/
-│ ├── src/
-│ ├── public/
-│ ├── package.json
-│ └── .env
-│
-├
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── .env
 │
 ├── backend/
-│ ├── config/
-│ ├── controllers/
-│ ├── middleware/
-│ ├── models/
-│ ├── routes/
-│ ├── package.json
-│ └── .env
-|
-|
-|── frontend/
-│ ├── src/
-│ ├── public/
-│ ├── package.json
-│ └── .env
-|
-|
-|
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── package.json
+│   └── .env
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── .env
+│
 ├── .gitignore
 └── README.md
+
+
 
 📋 Prerequisites
 
@@ -131,7 +128,10 @@ cd HireHub
 
 2. Install backend dependencies
 
+
 cd backend
+
+
 npm install
 
 Create a .env file inside the backend directory:
@@ -156,6 +156,7 @@ EMAIL_PASS=your_email_app_password
 Use the exact environment variable names expected by your backend code. Configure the email variables only if your OTP implementation uses them.
 
 3. Run the backend
+
    npm run dev
 
  If the dev script is not configured, check package.json and use the appropriate start command.
@@ -166,9 +167,13 @@ http://localhost:4000
 
 
 4. Install frontend dependencies
+
   Open another terminal:
 
   cd frontend
+
+
+  
   npm install
 
 Create the frontend .env file if your application uses Vite:
@@ -176,11 +181,14 @@ Create the frontend .env file if your application uses Vite:
 
  VITE_BACKEND_URL=http://localhost:4000
 
+
  Ensure the variable name matches the one used in your frontend code.
 
  5. Run the frontend
 
  npm run dev
+
+
  Open the local URL printed in your terminal, commonly:
 
  http://localhost:5173
@@ -190,7 +198,11 @@ Create the frontend .env file if your application uses Vite:
 Open another terminal:
 
 cd admin
+
+
 npm install
+
+
 npm run dev
 
 Configure the admin frontend's backend URL using the environment variable expected by that application.
