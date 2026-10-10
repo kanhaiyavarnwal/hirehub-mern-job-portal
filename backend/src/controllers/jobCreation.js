@@ -1,37 +1,50 @@
-
 import Job from "../models/jobModel.js";
 
- const createdJob = async (req, res) => {
+const createdJob = async (req, res) => {
   try {
-    const {
-      jobTitle,
-      jobDescription,
-      experience,
-      salary,
-      location,
-      bestToHave,
-    } = req.body;
+    const { jobTitle, jobDescription, experience, salary, location } = req.body;
 
-    if (
-      !jobTitle ||
-      !jobDescription ||
-      !experience ||
-      !salary ||
-      !location
-    ) {
+    let { bestToHave } = req.body;
+
+    if (!jobTitle || !jobDescription || !experience || !salary || !location) {
       return res.status(400).json({
         success: false,
         message: "All required fields must be provided",
       });
     }
-    console.log("req body in job creation: ",req.body)
+
+    if (typeof bestToHave === "string") {
+      try {
+        bestToHave = JSON.parse(bestToHave);
+      } catch (error) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid bestToHave format",
+        });
+      }
+    }
+
+    if (
+      bestToHave !== undefined &&
+      (!Array.isArray(bestToHave) ||
+        !bestToHave.every((item) => typeof item === "string"))
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "bestToHave must be an array of strings",
+      });
+    }
+
+    // console.log("Request body:", req.body);
+    // console.log("Parsed requirements:", bestToHave);
+
     const job = await Job.create({
       jobTitle,
       jobDescription,
       experience,
       salary,
       location,
-      bestToHave,
+      bestToHave: bestToHave || [],
     });
 
     return res.status(201).json({
@@ -40,6 +53,7 @@ import Job from "../models/jobModel.js";
       job,
     });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({
       success: false,
       message: "Failed to create job",
@@ -48,8 +62,7 @@ import Job from "../models/jobModel.js";
   }
 };
 
-
- const getAllJobs = async (req, res) => {
+const getAllJobs = async (req, res) => {
   try {
     const jobs = await Job.find().sort({ createdAt: -1 });
 
@@ -59,6 +72,7 @@ import Job from "../models/jobModel.js";
       jobs,
     });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch jobs",
@@ -67,7 +81,7 @@ import Job from "../models/jobModel.js";
   }
 };
 
- const getJobById = async (req, res) => {
+const getJobById = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -92,6 +106,7 @@ import Job from "../models/jobModel.js";
       job,
     });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch job",
@@ -99,7 +114,6 @@ import Job from "../models/jobModel.js";
     });
   }
 };
-
 
 const deleteJob = async (req, res) => {
   try {
@@ -126,6 +140,7 @@ const deleteJob = async (req, res) => {
       message: "Job deleted successfully",
     });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({
       success: false,
       message: "Failed to delete job",
@@ -134,4 +149,4 @@ const deleteJob = async (req, res) => {
   }
 };
 
-export {createdJob,getAllJobs,deleteJob,getJobById}
+export { createdJob, getAllJobs, deleteJob, getJobById };

@@ -1,19 +1,18 @@
 import nodemailer from "nodemailer";
 
-
 const sendOTPEmail = async (email, otp) => {
   try {
-    // console.log("email send page")
-     const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+    console.log("email send page");
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
     const info = await transporter.sendMail({
-      from: `"Job Portal" <${"XYZ company"}>`,
+      from: `"Job Portal" <${"Hirehub pvt Limited"}>`,
       to: email,
       subject: "Job Portal - OTP Verification",
       html: `

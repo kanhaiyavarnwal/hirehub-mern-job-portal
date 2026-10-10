@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema(
   {
@@ -39,7 +39,7 @@ const jobSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Job = mongoose.model("Job", jobSchema);

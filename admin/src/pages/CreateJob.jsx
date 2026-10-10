@@ -44,9 +44,7 @@ const CreateJob = ({ token }) => {
     }
 
     if (
-      form.bestToHave.some(
-        (item) => item.toLowerCase() === value.toLowerCase()
-      )
+      form.bestToHave.some((item) => item.toLowerCase() === value.toLowerCase())
     ) {
       toast.error("This requirement has already been added");
       return;
@@ -70,40 +68,31 @@ const CreateJob = ({ token }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.jobTitle.trim() || !form.jobDescription.trim()) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
     try {
       setLoading(true);
-    
+
       const formData = new FormData();
 
-     formData.append("jobTitle", form.jobTitle.trim());
-    formData.append("jobDescription", form.jobDescription.trim());
-    formData.append("experience", form.experience.trim());
-    formData.append("salary", form.salary.trim());
-    formData.append("location", form.location.trim());
+      formData.append("jobTitle", form.jobTitle.trim());
+      formData.append("jobDescription", form.jobDescription.trim());
+      formData.append("experience", form.experience.trim());
+      formData.append("salary", form.salary.trim());
+      formData.append("location", form.location.trim());
 
-// Send the array as JSON
-    formData.append("bestToHave", JSON.stringify(form.bestToHave));
-   formData.append("bestToHave", JSON.stringify(form.bestToHave));
-   for (const [key, value] of formData.entries()) {
-  console.log(key, value);
-}
-    console.log("token: ",token)
+      //     Send the array as JSON from frontend to backend
+      formData.append("bestToHave", JSON.stringify(form.bestToHave));
+
+      // console.log("token: ",token)
       const { data } = await axios.post(
         `${backendUrl}/job/jobCreated`,
-        formData
-       ,
+        formData,
         {
           headers: {
-            token:token
+            token: token,
           },
-        }
+        },
       );
-    console.log(data)
+      // console.log(data)
       if (!data.success) {
         toast.error(data.message || "Failed to create job");
         return;
@@ -122,9 +111,7 @@ const CreateJob = ({ token }) => {
 
       setRequirement("");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Unable to create job"
-      );
+      toast.error(error.response?.data?.message || "Unable to create job");
     } finally {
       setLoading(false);
     }
@@ -133,8 +120,7 @@ const CreateJob = ({ token }) => {
   const inputClass =
     "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100";
 
-  const labelClass =
-    "mb-2 block text-sm font-semibold text-slate-700";
+  const labelClass = "mb-2 block text-sm font-semibold text-slate-700";
 
   return (
     <div className="min-h-full bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
