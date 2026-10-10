@@ -1,13 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import {
-  LayoutDashboard,
   BriefcaseBusiness,
   PlusCircle,
-  Trash2,
-  ListChecks,
-  Settings,
-  LogOut,
+   LogOut,
   PanelLeftClose,
 } from "lucide-react";
 
@@ -23,14 +19,10 @@ const menuItems = [
     path: "/getAll-job",
     icon: BriefcaseBusiness,
   },
-  // {
-  //   name: "Delete Jobs",
-  //   path: "/delete-job",
-  //   icon: Trash2,
-  // },
+
 ];
 
-export default function Sidebar({setToken}) {
+ const Sidebar=({setToken}) =>{
   return (
     <aside className="flex h-screen w-72 flex-col border-r border-slate-200 bg-white">
       {/* Brand */}
@@ -109,6 +101,27 @@ export default function Sidebar({setToken}) {
         <p className="mb-3 mt-9 px-3 text-xs font-semibold uppercase tracking-widest text-slate-400">
           Preferences
         </p>
+       
+
+
+<button
+  type="button"
+  onClick={()=>{
+    setToken("");
+      localStorage.removeItem("token");
+       navigate("/login");
+  }}
+  className="inline-flex items-center justify-center gap-2
+    rounded-xl bg-blue-600 px-5 py-2.5
+    text-sm font-semibold text-white shadow-sm
+    transition-all duration-200
+    hover:bg-blue-700 hover:shadow-md
+    focus:outline-none focus:ring-2 focus:ring-blue-500
+    focus:ring-offset-2 active:scale-95"
+>
+  <LogOut size={17} />
+  Logout
+</button>
 
       
       </div>
@@ -117,3 +130,4 @@ export default function Sidebar({setToken}) {
     </aside>
   );
 }
+export default Sidebar

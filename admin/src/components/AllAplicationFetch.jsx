@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { backendUrl } from "../App";
 
-export default function JobApplicants({ token }) {
+  const JobApplicants=({ token })=> {
   const { id } = useParams();
 
   const [job, setJob] = useState(null);
@@ -41,7 +41,7 @@ export default function JobApplicants({ token }) {
       setApplicants(data.applications || []);
       setTotalApplications(data.totalApplications || 0);
     } catch (error) {
-      console.error("API error:", error.response?.data || error);
+      console.error("API error:", error.message);
 
       toast.error(
         error.response?.data?.message || "Unable to load applicants"
@@ -231,3 +231,4 @@ export default function JobApplicants({ token }) {
     </div>
   );
 }
+export default JobApplicants

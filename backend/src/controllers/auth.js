@@ -9,7 +9,6 @@ const sendOTP = async (req, res) => {
   try {
     const { email } = req.body;
 
-    // 1. Validate email
     if (!email) {
       return res.status(400).json({
         success: false,
@@ -17,7 +16,6 @@ const sendOTP = async (req, res) => {
       });
     }
 
-    // 2. Check user already exists
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -27,8 +25,6 @@ const sendOTP = async (req, res) => {
       });
     }
 
-    // 3. Generate OTP
-    console.time("OTP generate");
     const otp = generateOTP();
     if (!otp) {
       return res.status(500).json({
@@ -36,9 +32,7 @@ const sendOTP = async (req, res) => {
         message: "Failed to generate OTP",
       });
     }
-    console.timeEnd("OTP generate");
-    // 4. Update existing OTP or create new OTP
-    console.time("OTP DB");
+
     await OTP.findOneAndUpdate(
       { email },
       {
@@ -52,15 +46,8 @@ const sendOTP = async (req, res) => {
       },
     );
 
-    // 5. Send OTP to email
-
-    console.timeEnd("OTP DB");
-
-    console.time("SEND EMAIL");
     const emailSent = await sendOTPEmail(email, otp);
-    console.timeEnd("SEND EMAIL");
 
-    // 6. If email failed
     if (!emailSent) {
       return res.status(500).json({
         success: false,
@@ -68,13 +55,12 @@ const sendOTP = async (req, res) => {
       });
     }
 
-    // 7. Success
     return res.status(200).json({
       success: true,
       message: "OTP sent successfully",
     });
   } catch (error) {
-    console.error("SEND OTP ERROR:", error);
+    console.error("SEND OTP ERROR:", error.message);
 
     return res.status(500).json({
       success: false,
@@ -87,15 +73,13 @@ const signup = async (req, res) => {
   try {
     const { name, email, password, otp } = req.body;
 
-    // Check fields
     if (!name || !email || !password || !otp) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
       });
     }
-
-    // Check user
+  // console.log(req.body)
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -105,12 +89,10 @@ const signup = async (req, res) => {
       });
     }
 
-    // Get latest OTP only
     const otpRecord = await OTP.findOne({ email })
       .sort({ createdAt: -1 })
       .limit(1);
 
-    // OTP not found / expired
     if (!otpRecord) {
       return res.status(400).json({
         success: false,
@@ -118,7 +100,6 @@ const signup = async (req, res) => {
       });
     }
 
-    // Check OTP
     if (otpRecord.otp !== otp) {
       return res.status(400).json({
         success: false,
@@ -126,18 +107,14 @@ const signup = async (req, res) => {
       });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
     const user = await User.create({
       name,
-
       email,
       password: hashedPassword,
     });
 
-    // Delete OTP after successful signup
     await OTP.deleteOne({
       _id: otpRecord._id,
     });
@@ -161,7 +138,6 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // 1. Validate fields
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -169,7 +145,6 @@ const login = async (req, res) => {
       });
     }
 
-    // 2. Find user
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -179,7 +154,6 @@ const login = async (req, res) => {
       });
     }
 
-    // 3. Compare password
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
@@ -189,7 +163,6 @@ const login = async (req, res) => {
       });
     }
 
-    // 4. Create JWT token
     const payload = {
       id: user._id,
       email: user.email,
@@ -199,14 +172,13 @@ const login = async (req, res) => {
       expiresIn: "7d",
     });
 
-    // 5. Response
     return res.status(200).json({
       success: true,
       message: "Login successful",
       token,
     });
   } catch (error) {
-    console.error("LOGIN ERROR:", error);
+    console.error("LOGIN ERROR:", error.message);
 
     return res.status(500).json({
       success: false,
@@ -217,28 +189,26 @@ const login = async (req, res) => {
 
 const adminLogin = async (req, res) => {
   const { email, password } = req.body;
-   
+
   if (
     email === process.env.ADMIN_EMAIL &&
     password === process.env.ADMIN_PASSWORD
   ) {
-    const token = jwt.sign(email + password, process.env.JWT_SECRET);
-  
-    
-    return res.status(200)
-              .json({
-                success:true,
-               
-               message: "Admin Login",
-                token,
-              })
-  }
-  else{
-    return res.status(401).json({
-        success:false,
-        message:"email or password is not match"
+    const token = jwt.sign(email + password, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
-    })
+    return res.status(200).json({
+      success: true,
+
+      message: "Admin Login",
+      token,
+    });
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: "email or password is not match",
+    });
   }
 };
 export { sendOTP, signup, login, adminLogin };

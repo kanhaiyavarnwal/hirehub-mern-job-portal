@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { backendUrl } from "../App";
 
-const Login = ({setToken}) => {
+const Login = ({ setToken }) => {
   const navigate = useNavigate();
-
 
   const [form, setForm] = useState({
     email: "",
@@ -28,41 +27,38 @@ const Login = ({setToken}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-
     try {
       setLoading(true);
 
-      const { data } = await axios.post(  `${backendUrl}/user/adminLogin`,
-       
+      const { data } = await axios.post(
+        `${backendUrl}/user/adminLogin`,
+
         {
-          email: form.email,
+          email: form.email.trim(),
           password: form.password,
-        }
+        },
       );
 
       if (!data.success) {
         toast.error(data.message || "Login failed");
         return;
       }
-      console.log("res login: ",data.token)
+      // console.log("res login: ",data.token)
       if (data.token) {
-      
-        setToken(data.token)
-        // localStorage.setItem("token", data.token);
+        setToken(data.token);
       }
 
       toast.success(data.message || "Admin login successful!");
+      navigate("/create-job");
 
-   
       setForm({
-        email:"",password:""
-      })
+        email: "",
+        password: "",
+      });
     } catch (error) {
-        console.log(error.message)
+      console.log(error.message);
       toast.error(
-        error.response?.data?.message ||
-          "Invalid credentials or server error"
+        error.response?.data?.message || "Invalid credentials or server error",
       );
     } finally {
       setLoading(false);
@@ -71,8 +67,6 @@ const Login = ({setToken}) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-    
-
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
         <h1 className="text-3xl font-bold text-center text-gray-800">
           Admin Login

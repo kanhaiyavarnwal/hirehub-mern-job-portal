@@ -1,26 +1,24 @@
-import mongoose from "mongoose"
-import Job from "./jobModel.js"
+import mongoose from "mongoose";
 
 const applyJobSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
 
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-
-  jobId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Job",
-    required: true,
-  },
+    jobId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
       trim: true,
     },
- 
+
     lastName: {
       type: String,
       required: true,
@@ -30,13 +28,11 @@ const applyJobSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique:true,
-    
+      unique: true,
+
       lowercase: true,
       trim: true,
     },
-
-   
 
     higherEducation: {
       type: String,
@@ -74,12 +70,12 @@ const applyJobSchema = new mongoose.Schema(
     resume: {
       type: String,
       default: "",
-      required:true,
+      required: true,
     },
   },
   {
     timestamps: true,
-  }
+  },
 );
 const ApplyJob = mongoose.model("ApplyJob", applyJobSchema);
 export default ApplyJob;
