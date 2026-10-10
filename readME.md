@@ -125,6 +125,8 @@ Git
 1. Clone the repository
 
 git clone https://github.com/kanhaiyavarnwal/hirehub-mern-job-portal
+
+
 cd HireHub
 
 2. Install backend dependencies
@@ -170,6 +172,8 @@ http://localhost:4000
   npm install
 
 Create the frontend .env file if your application uses Vite:
+
+
  VITE_BACKEND_URL=http://localhost:4000
 
  Ensure the variable name matches the one used in your frontend code.
@@ -213,15 +217,17 @@ I reviewed and tested the generated suggestions, adapted the code to my project 
 
 Specific AI-Assisted Tasks
 
-    1.  React Component Development — Assisted with structuring the signup, login, job listing,  and admin dashboard interfaces.
 
-    2. REST API Development — Assisted with implementing and debugging Express controllers and routes for authentication and job management.
+1. React Component Development — Assisted with structuring the signup, login, job listing,  and admin dashboard interfaces.
 
-    3. MongoDB Integration — Helped investigate schema validation, database queries, and integration issues.
+2. REST API Development — Assisted with implementing and debugging Express controllers and routes for authentication and job management.
 
-    4.  Authentication and File Uploads — Assisted with JWT authentication, OTP verification, Multer, and Cloudinary integration.
+3. MongoDB Integration — Helped investigate schema validation, database queries, and integration issues.
 
-    5. Debugging and Refactoring — Helped identify runtime errors, troubleshoot API integration and CORS issues, and improve code readability.
+4. Authentication and File Uploads — Assisted with JWT authentication, OTP verification, Multer, and Cloudinary integration.
+
+5. Debugging and Refactoring — Helped identify runtime errors, troubleshoot API integration and CORS issues, and improve code readability.
+
 
 
 
@@ -261,4 +267,6 @@ Debugging, version control, and AI-assisted development.
 
 Kanhaiya Varnwal
 GitHub : https://github.com/kanhaiyavarnwal
+
+
 Portofolio: https://varnwalkanhaiya.netlify.app/
