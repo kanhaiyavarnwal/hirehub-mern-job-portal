@@ -202,6 +202,10 @@ cd admin
 
 npm install
 
+Create the frontend .env file if your application uses Vite:
+
+VITE_BACKEND_URL=http://localhost:4000
+
 
 npm run dev
 
