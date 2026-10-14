@@ -124,7 +124,7 @@ Git
 git clone https://github.com/kanhaiyavarnwal/hirehub-mern-job-portal
 
 
-cd HireHub
+cd hirehub-mern-job-portal
 
 2. Install backend dependencies
 
